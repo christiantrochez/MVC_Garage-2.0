@@ -90,7 +90,7 @@ namespace MVC_Garage_2._0.Controllers
             return View(parkedVehicle);
         }
 
-        // GET: ParkedVehicles/Delete/5
+        //// GET: ParkedVehicles/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -108,11 +108,42 @@ namespace MVC_Garage_2._0.Controllers
         // POST: ParkedVehicles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    ParkedVehicle parkedVehicle = db.ParkedVehicles.Find(id);
+        //    db.ParkedVehicles.Remove(parkedVehicle);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+
+        //}
         public ActionResult DeleteConfirmed(int id)
         {
+            int price = 2;
+            int totalCost;
             ParkedVehicle parkedVehicle = db.ParkedVehicles.Find(id);
-            db.ParkedVehicles.Remove(parkedVehicle);
-            db.SaveChanges();
+            VehicleDeleteViewModel vehVM = new VehicleDeleteViewModel();
+            vehVM.Id = parkedVehicle.Id;
+            
+            //ParkedVehicle parkedVehicle = db.ParkedVehicles.Find(id);
+            //db.ParkedVehicles.Remove(parkedVehicle);
+            //db.SaveChanges();
+            //return RedirectToAction("Index");
+
+            var vehicle = new ParkedVehicle
+            {
+                Id = vehVM.Id,
+                InDate = vehVM.CheckInTime
+
+
+            };
+
+            var CheckOutDate = DateTime.Now;
+            TimeSpan totalTime = CheckOutDate.Subtract(vehicle.InDate);
+            totalCost = totalTime.Hours * price;
+            vehVM.kvittoString = $"Your Vehicle with Registration Number: {vehicle.RegistrationNumber} parked since {vehicle.InDate} until {CheckOutDate} will cost: {totalCost:C}";
+            //irmDelete.kvittoString
+            //return RedirectToAction("ConfirmDelete",kvittoString);
+            ViewBag.Text = vehVM.kvittoString;
             return RedirectToAction("Index");
         }
 
@@ -123,6 +154,17 @@ namespace MVC_Garage_2._0.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        public class VehicleDeleteViewModel
+        {
+            public int Id { get; set; }
+            public int Price { get; set; }
+            public DateTime CheckInTime { get; set; }
+            // public DateTime CheckOutTime { get; set; }
+            public string kvittoString;
+            // public int Count { get; set; }
+            //public string Description { get; set; }
+            //TimeSpan totalTime = DateTime.Now.Subtract(InDate);
         }
     }
 }
