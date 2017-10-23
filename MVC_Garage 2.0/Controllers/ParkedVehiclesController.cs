@@ -39,6 +39,7 @@ namespace MVC_Garage_2._0.Controllers
         // GET: ParkedVehicles/Create
         public ActionResult Create()
         {
+
             return View();
         }
 
@@ -47,10 +48,11 @@ namespace MVC_Garage_2._0.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,RegistrationNumber,NumberOfWheels,VehicleBrand,VehicleModel,InDate,VehicleTYpe,Color")] ParkedVehicle parkedVehicle)
+        public ActionResult Create([Bind(Include = "Id,RegistrationNumber,NumberOfWheels,VehicleBrand,VehicleModel,VehicleTYpe,Color")] ParkedVehicle parkedVehicle)
         {
             if (ModelState.IsValid)
             {
+                parkedVehicle.InDate = DateTime.Now;
                 db.ParkedVehicles.Add(parkedVehicle);
                 db.SaveChanges();
                 return RedirectToAction("Index");
