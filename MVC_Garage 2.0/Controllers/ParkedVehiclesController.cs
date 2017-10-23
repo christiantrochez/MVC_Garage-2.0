@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using MVC_Garage_2._0.DataAccessLayer;
 using MVC_Garage_2._0.Models;
+using MVC_Garage_2._0.Models.ViewModels;
 
 namespace MVC_Garage_2._0.Controllers
 {
@@ -15,7 +16,66 @@ namespace MVC_Garage_2._0.Controllers
     {
         private RegisterContext db = new RegisterContext();
 
-        // GET: ParkedVehicles
+        // GET: ListAllVehicles
+        public ActionResult ListAllVehicles(string sortOrder, string searchString, string currentFilter)
+        {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.RegSortParam = String.IsNullOrEmpty(sortOrder) ? "regNo_desc" : "";
+            ViewBag.DateSortParam = sortOrder == "Date" ? "date_desc" : "Date";
+
+
+            var allParkedVehicles = db.ParkedVehicles;
+
+            var VehicleItems = allParkedVehicles.Select(v => new VehicleListItem
+            {
+                Id = v.Id,
+                RegistrationNumber = v.RegistrationNumber,
+                VehicleType = v.VehicleTYpe,
+                Color = v.Color,
+                InDate = v.InDate
+            });
+
+            if (searchString == null)
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                VehicleItems = VehicleItems.Where(v => v.RegistrationNumber.StartsWith(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "regNo_desc":
+                    {
+                        VehicleItems = VehicleItems.OrderByDescending(v => v.RegistrationNumber);
+                        break;
+                    }
+                case "Date":
+                    {
+                        VehicleItems = VehicleItems.OrderBy(v => v.InDate);
+                        break;
+                    }
+                case "date_desc":
+                    {
+                        VehicleItems = VehicleItems.OrderByDescending(v => v.InDate);
+                        break;
+                    }
+                default:
+                   {
+                        VehicleItems = VehicleItems.OrderBy(v => v.RegistrationNumber);
+                            break;
+                   }                                        
+            }
+
+
+            return View(VehicleItems);
+        }
+
+        // GET: Index
         public ActionResult Index()
         {
             return View(db.ParkedVehicles.ToList());
