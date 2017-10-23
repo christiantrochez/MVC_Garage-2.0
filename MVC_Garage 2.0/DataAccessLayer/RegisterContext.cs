@@ -9,7 +9,7 @@ namespace MVC_Garage_2._0.DataAccessLayer
     public class RegisterContext : DbContext
     {
         public RegisterContext()
-            : base ("name=ParkedVehicleContext")
+            : base ("ParkedVehicleContext")
         {
         }
 
