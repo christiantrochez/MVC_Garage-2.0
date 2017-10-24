@@ -23,7 +23,6 @@ namespace MVC_Garage_2._0.Controllers
             ViewBag.RegSortParam = String.IsNullOrEmpty(sortOrder) ? "regNo_desc" : "";
             ViewBag.DateSortParam = sortOrder == "Date" ? "date_desc" : "Date";
 
-
             var allParkedVehicles = db.ParkedVehicles;
 
             var VehicleItems = allParkedVehicles.Select(v => new VehicleListItem
