@@ -12,7 +12,6 @@ namespace MVC_Garage_2._0.DataAccessLayer
             : base ("ParkedVehicleContext")
         {
         }
-
         public DbSet<Models.ParkedVehicle> ParkedVehicles { get; set; }
 
     }

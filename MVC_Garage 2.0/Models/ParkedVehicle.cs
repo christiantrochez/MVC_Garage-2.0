@@ -31,12 +31,16 @@ namespace MVC_Garage_2._0.Models
         public int Id { get; set; }
 
         [Display(Name ="Registration Number")]
+
+        [Required]
         public string RegistrationNumber { get; set; }
 
         [Display(Name ="Number of wheels")]
+
         [Range(0, 50, ErrorMessage ="The number of wheels must be between 0 and 50")]
         public int NumberOfWheels { get; set; }
 
+        [Required]
         [Display(Name ="Vehicle brand")]
         public string VehicleBrand { get; set; }
 
