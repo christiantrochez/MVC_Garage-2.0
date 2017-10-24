@@ -240,3 +240,4 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/MVC_Garage 2.0/Views/ParkedVehicles/bbbDelete.cshtml
