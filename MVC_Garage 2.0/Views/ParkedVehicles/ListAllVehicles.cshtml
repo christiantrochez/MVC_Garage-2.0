@@ -1,0 +1,60 @@
+﻿@model IEnumerable<MVC_Garage_2._0.Models.ViewModels.VehicleListItem>
+
+@{
+    ViewBag.Title = "List All Vehicles";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+
+    @using (Html.BeginForm("ListAllVehicles", "ParkedVehicles", FormMethod.Get))
+    {
+        <p>
+            Search Registration Number: @Html.TextBox("searchString", ViewBag.CurrentFilter as string)
+        </p>
+    }
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Registration Number", "ListAllVehicles", new { sortOrder = ViewBag.RegSortParam, currentFilter = ViewBag.CurrentFilter })
+            @*@Html.DisplayNameFor(model => model.RegistrationNumber)*@
+        </th>
+        <th>
+            @Html.ActionLink("Parking Date", "ListAllVehicles", new { sortOrder = ViewBag.DateSortParam, currentFilter = ViewBag.CurrentFilter })
+           @* @Html.DisplayNameFor(model => model.InDate)*@
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VehicleType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Color)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.RegistrationNumber)
+        </td> 
+        <td>
+            @Html.DisplayFor(modelItem => item.InDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VehicleType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Color)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
