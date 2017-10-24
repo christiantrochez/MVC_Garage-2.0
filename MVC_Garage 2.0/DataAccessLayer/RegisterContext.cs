@@ -14,6 +14,7 @@ namespace MVC_Garage_2._0.DataAccessLayer
         }
 
         public DbSet<Models.ParkedVehicle> ParkedVehicles { get; set; }
+        public DbSet<Models.Parking> Parkings { get; set; }
 
     }
 }

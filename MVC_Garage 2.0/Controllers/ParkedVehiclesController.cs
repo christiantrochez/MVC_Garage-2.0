@@ -25,6 +25,7 @@ namespace MVC_Garage_2._0.Controllers
 
 
             var allParkedVehicles = db.ParkedVehicles;
+            var allParkingSpots = db.Parkings;
 
             var VehicleItems = allParkedVehicles.Select(v => new VehicleListItem
             {
