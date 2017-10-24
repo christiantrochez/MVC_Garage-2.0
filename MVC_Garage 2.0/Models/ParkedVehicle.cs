@@ -25,11 +25,12 @@ namespace MVC_Garage_2._0.Models
     }
 
 
+
     public class ParkedVehicle
     {
         public int Id { get; set; }
 
-        [Display(Name ="Registratior Number")]
+        [Display(Name ="Registration Number")]
         public string RegistrationNumber { get; set; }
 
         [Display(Name ="Number of wheels")]
