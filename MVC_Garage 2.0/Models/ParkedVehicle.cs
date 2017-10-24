@@ -42,7 +42,7 @@ namespace MVC_Garage_2._0.Models
         [Display(Name ="Vehicle model")]
         public string VehicleModel { get; set; }
 
-
+        [Display(Name ="Parking Date and Time")]
         public DateTime InDate { get; set; }
 
         [Display(Name ="Vehicle type")]
