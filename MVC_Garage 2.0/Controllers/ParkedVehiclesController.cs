@@ -17,6 +17,7 @@ namespace MVC_Garage_2._0.Controllers
         private RegisterContext db = new RegisterContext();
         private int MinuteCost = 10;
         // GET: ListAllVehicles
+        //Started today
         public ActionResult ListAllVehicles(string sortOrder, string searchString, string currentFilter)
         {
             ViewBag.CurrentSort = sortOrder;
