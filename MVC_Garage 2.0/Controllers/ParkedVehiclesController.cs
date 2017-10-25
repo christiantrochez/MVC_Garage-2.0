@@ -134,26 +134,59 @@ namespace MVC_Garage_2._0.Controllers
             var currentParking = db.Parkings;
 
             int parkingSpotNumber = findFirstAvailableSpot(currentParking, parkedVehicle.VehicleTYpe);
-            //Check if there are availabe spots and store the spots in the parkedVehicle object.
 
-            if (ModelState.IsValid)
+            if (parkingSpotNumber == 0)
             {
-                parkedVehicle.InDate = DateTime.Now;
-                db.ParkedVehicles.Add(parkedVehicle);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("ListAllVehicles");
             }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    var spotToUpdate = currentParking.Find(parkingSpotNumber);
 
-            return View(parkedVehicle);
+                    switch (parkedVehicle.VehicleTYpe)
+                    {
+                        case VehicleType.Car:
+                            spotToUpdate.WhatIsParked = 3;
+                            break;
+                        case VehicleType.Motorcycle:
+                            break;
+                        case VehicleType.Airplane:
+                            for (int i = 0; i <= 2; i++)
+                            {
+                                spotToUpdate = currentParking.Find(parkingSpotNumber + i);
+                                spotToUpdate.WhatIsParked = 3;
+                            }
+                            break;
+                        default:
+                            for (int i = 0; i <= 1 ; i++)
+                            {
+                                spotToUpdate = currentParking.Find(parkingSpotNumber + i);
+                                spotToUpdate.WhatIsParked = 3;
+                            }
+                            break;
+                    }
+
+                    
+                    
+
+                    parkedVehicle.InDate = DateTime.Now;
+                    parkedVehicle.ParkingSpot = parkingSpotNumber;
+                    db.ParkedVehicles.Add(parkedVehicle);
+                    db.SaveChanges();
+                    return RedirectToAction("ListAllVehicles");
+                }
+
+                return View(parkedVehicle);
+            }
         }
 
         private int findFirstAvailableSpot(DbSet<Parking> currentParking, VehicleType vehicleType)
         {
-            var freeSpots = currentParking.Where(s => s.WhatIsParked == 0).ToList();
+            var freeSpots = currentParking.Where(s => s.WhatIsParked == 0).ToList();         
 
-            //var firstSpot = freeSpots.FirstOrDefault();
-
-            if (freeSpots == null)
+            if (freeSpots.Count() == 0)
             {
                 return 0;
             }
@@ -312,6 +345,35 @@ namespace MVC_Garage_2._0.Controllers
         public ActionResult CheckOutConfirmed(int id)
         {
             ParkedVehicle parkedVehicle = db.ParkedVehicles.Find(id);
+
+            var parkingSpot = parkedVehicle.ParkingSpot;
+
+            var currentParking = db.Parkings;
+            var spotToUpdate = currentParking.Find(parkingSpot);
+
+            switch (parkedVehicle.VehicleTYpe)
+            {
+                case VehicleType.Car:
+                    spotToUpdate.WhatIsParked = 0;
+                    break;
+                case VehicleType.Motorcycle:
+                    break;
+                case VehicleType.Airplane:
+                    for (int i = 0; i <= 2; i++)
+                    {
+                        spotToUpdate = currentParking.Find(parkingSpot + i);
+                        spotToUpdate.WhatIsParked = 0;
+                    }
+                    break;
+                default:
+                    for (int i = 0; i <= 1; i++)
+                    {
+                        spotToUpdate = currentParking.Find(parkingSpot + i);
+                        spotToUpdate.WhatIsParked = 0;
+                    }
+                    break;
+            }
+
             db.ParkedVehicles.Remove(parkedVehicle);
             db.SaveChanges();
             return RedirectToAction("Index");

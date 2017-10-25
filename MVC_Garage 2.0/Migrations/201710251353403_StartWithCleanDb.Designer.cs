@@ -7,13 +7,13 @@ namespace MVC_Garage_2._0.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class FirstMigFor2_1 : IMigrationMetadata
+    public sealed partial class StartWithCleanDb : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(FirstMigFor2_1));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(StartWithCleanDb));
         
         string IMigrationMetadata.Id
         {
-            get { return "201710250810493_FirstMigFor2_1"; }
+            get { return "201710251353403_StartWithCleanDb"; }
         }
         
         string IMigrationMetadata.Source
