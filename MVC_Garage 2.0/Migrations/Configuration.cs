@@ -38,6 +38,32 @@ namespace MVC_Garage_2._0.Migrations
                 new Models.ParkedVehicle { RegistrationNumber = "HH 25-45-ERF", Color = Color.White, NumberOfWheels = 4, VehicleTYpe = VehicleType.Car, VehicleBrand = "Porche", VehicleModel = "958", InDate = DateTime.Parse("2017-10-20 00:00:00") },
                 new Models.ParkedVehicle { RegistrationNumber = "134-FRG-X", Color = Color.Black, NumberOfWheels = 4, VehicleTYpe = VehicleType.Airplane, VehicleBrand = "Buggati", VehicleModel = "Veron", InDate = DateTime.Parse("2017-10-19 23:59:59") }
                 );
+
+            context.Parkings.AddOrUpdate(
+                p => p.Id,
+                new Models.Parking { Id = 1, WhatIsParked = 3 }, //Car
+                new Models.Parking { Id = 2, WhatIsParked = 3 }, //Boat
+                new Models.Parking { Id = 3, WhatIsParked = 3 },//Boat
+                new Models.Parking { Id = 4, WhatIsParked = 3 },//Bus
+                new Models.Parking { Id = 5, WhatIsParked = 3 },//Bus
+                new Models.Parking { Id = 6, WhatIsParked = 0 },//Empty
+                new Models.Parking { Id = 7, WhatIsParked = 0 },//Empty
+                new Models.Parking { Id = 8, WhatIsParked = 0 },//Empty
+                new Models.Parking { Id = 9, WhatIsParked = 1 }, //MC
+                new Models.Parking { Id = 10, WhatIsParked = 3 }, //Car
+                new Models.Parking { Id = 11, WhatIsParked = 3 }, //Car
+                new Models.Parking { Id = 12, WhatIsParked = 0 }, //Empty
+                new Models.Parking { Id = 13, WhatIsParked = 3 },//AirPlane
+                new Models.Parking { Id = 14, WhatIsParked = 3 },//AirPlane
+                new Models.Parking { Id = 15, WhatIsParked = 3 },//AirPlane
+                new Models.Parking { Id = 16, WhatIsParked = 0 },//Empty
+                new Models.Parking { Id = 17, WhatIsParked = 0 },//Empty
+                new Models.Parking { Id = 18, WhatIsParked = 0 },//Empty
+                new Models.Parking { Id = 19, WhatIsParked = 0 },//Empty
+                new Models.Parking { Id = 20, WhatIsParked = 0 }//Empty
+                );
+
+
         }
     }
 }

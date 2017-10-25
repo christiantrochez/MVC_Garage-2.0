@@ -7,7 +7,7 @@ namespace MVC_Garage_2._0.Models
 {
     public class Parking
     {
-        public int AvailableParkingSpots { get; set; }
-        public int[] ParkingSpots { get; set; }
+        public int Id { get; set; }
+        public int WhatIsParked { get; set; } //0 empty, 1 one MC, 2 two MC, 3 full
     }
 }

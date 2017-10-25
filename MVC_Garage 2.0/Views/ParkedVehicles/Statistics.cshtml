@@ -1,0 +1,30 @@
+﻿@model IEnumerable<MVC_Garage_2._0.Models.ViewModels.StatisticsViewModel>
+@{
+    ViewBag.Title = "Statistics";
+}
+
+<h2>Statistics</h2>
+
+<table>
+    <tr>
+        <th>
+            Vehicle Type
+        </th>
+        <th>
+            Number of types
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicelType)
+            </td>
+            <td>
+                @item.NumberOfVechileType
+            </td>
+        </tr>
+    }
+</table>
+

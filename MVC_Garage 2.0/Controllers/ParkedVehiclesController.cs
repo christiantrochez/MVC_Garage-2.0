@@ -16,6 +16,26 @@ namespace MVC_Garage_2._0.Controllers
     {
         private RegisterContext db = new RegisterContext();
         private int MinuteCost = 10;
+
+        // GET: Statistics
+        //public ActionResult Statistics()
+        //{
+        //   // var allParkingSpots = db.Parkings;
+        //    var allParkedVehicles = db.ParkedVehicles;
+
+        //    var Statistics = from allParked in allParkedVehicles
+        //                     group allParked by allParked.VehicleTYpe into vehicleGroup
+        //                     select new StatisticsViewModel()
+        //                     {
+        //                         VehicelType = vehicleGroup.Key,
+        //                         NumberOfVechileType = vehicleGroup.Count()
+        //                     };
+
+        //    return View(Statistics.ToList());
+
+        //}
+
+
         // GET: ListAllVehicles
         public ActionResult ListAllVehicles(string sortOrder, string searchString, string currentFilter)
         {
@@ -25,7 +45,7 @@ namespace MVC_Garage_2._0.Controllers
 
 
             var allParkedVehicles = db.ParkedVehicles;
-            var allParkingSpots = db.Parkings;
+           
 
             var VehicleItems = allParkedVehicles.Select(v => new VehicleListItem
             {
@@ -111,6 +131,9 @@ namespace MVC_Garage_2._0.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,RegistrationNumber,NumberOfWheels,VehicleBrand,VehicleModel,VehicleTYpe,Color")] ParkedVehicle parkedVehicle)
         {
+            var currentParking = db.Parkings;
+
+            int parkingSpotNumber = findFirstAvailableSpot(currentParking, parkedVehicle.VehicleTYpe);
             //Check if there are availabe spots and store the spots in the parkedVehicle object.
 
             if (ModelState.IsValid)
@@ -122,6 +145,51 @@ namespace MVC_Garage_2._0.Controllers
             }
 
             return View(parkedVehicle);
+        }
+
+        private int findFirstAvailableSpot(DbSet<Parking> currentParking, VehicleType vehicleType)
+        {
+            var freeSpots = currentParking.Where(s => s.WhatIsParked == 0).ToList();
+
+            //var firstSpot = freeSpots.FirstOrDefault();
+
+            if (freeSpots == null)
+            {
+                return 0;
+            }
+            else
+            {
+                switch (vehicleType)
+                {
+                    case VehicleType.Car:
+                        return freeSpots.FirstOrDefault().Id;
+                        break;
+                    case VehicleType.Motorcycle:
+                     
+                        break;
+                    case VehicleType.Airplane:
+                        for (int i = 0; i < freeSpots.Count()-2; i++)
+                        {
+                            if ((freeSpots[i].Id == (freeSpots[i + 1].Id - 1)) &&
+                               (freeSpots[i].Id == (freeSpots[i + 2].Id - 2)))
+                            {
+                                return freeSpots[i].Id;
+                            }
+                        }
+                        return 0;
+                        break;
+                    default:
+                        for (int i = 0; i < freeSpots.Count()-1; i++)
+                        {
+                            if (freeSpots[i].Id == (freeSpots[i+1].Id - 1))
+                            {
+                                return freeSpots[i].Id;
+                            }
+                        }
+                        return 0;
+                }
+                return 0;
+            }
         }
 
         // GET: ParkedVehicles/Edit/5
