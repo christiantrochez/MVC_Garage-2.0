@@ -111,6 +111,8 @@ namespace MVC_Garage_2._0.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,RegistrationNumber,NumberOfWheels,VehicleBrand,VehicleModel,VehicleTYpe,Color")] ParkedVehicle parkedVehicle)
         {
+            //Check if there are availabe spots and store the spots in the parkedVehicle object.
+
             if (ModelState.IsValid)
             {
                 parkedVehicle.InDate = DateTime.Now;
