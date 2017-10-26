@@ -426,6 +426,20 @@ namespace MVC_Garage_2._0.Controllers
          
             return View(parking);
         }
+        
+        //public PartialViewResult ParkingOverallStatus()
+        //{
+        //    var currentParking = db.Parkings.ToList();
+
+        //    var emptySpots = currentParking.Where(s => s.WhatIsParked == 0);
+
+        //    var returnString = $"@<progress value={emptySpots.Count()} max={currentParking.Count()}></progress>";
+
+        //    return PartialView(returnString);   
+
+
+        //}
+
        
         protected override void Dispose(bool disposing)
         {
