@@ -151,6 +151,7 @@ namespace MVC_Garage_2._0.Controllers
                             spotToUpdate.WhatIsParked = 3;
                             break;
                         case VehicleType.Motorcycle:
+                            spotToUpdate.WhatIsParked++;
                             break;
                         case VehicleType.Airplane:
                             for (int i = 0; i <= 2; i++)
@@ -184,7 +185,16 @@ namespace MVC_Garage_2._0.Controllers
 
         private int findFirstAvailableSpot(DbSet<Parking> currentParking, VehicleType vehicleType)
         {
-            var freeSpots = currentParking.Where(s => s.WhatIsParked == 0).ToList();         
+            List<Parking> freeSpots;
+
+            if (vehicleType != VehicleType.Motorcycle)
+            {
+                freeSpots = currentParking.Where(s => s.WhatIsParked == 0).ToList();
+            }
+            else
+            {
+                freeSpots = currentParking.Where(s => s.WhatIsParked < 3).ToList();
+            }
 
             if (freeSpots.Count() == 0)
             {
@@ -198,7 +208,7 @@ namespace MVC_Garage_2._0.Controllers
                         return freeSpots.FirstOrDefault().Id;
                         break;
                     case VehicleType.Motorcycle:
-                     
+                        return freeSpots.FirstOrDefault().Id;
                         break;
                     case VehicleType.Airplane:
                         for (int i = 0; i < freeSpots.Count()-2; i++)
@@ -357,6 +367,7 @@ namespace MVC_Garage_2._0.Controllers
                     spotToUpdate.WhatIsParked = 0;
                     break;
                 case VehicleType.Motorcycle:
+                    spotToUpdate.WhatIsParked--;
                     break;
                 case VehicleType.Airplane:
                     for (int i = 0; i <= 2; i++)
