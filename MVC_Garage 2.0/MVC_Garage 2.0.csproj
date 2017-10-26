@@ -137,9 +137,22 @@
     <Compile Include="Migrations\201710251353403_StartWithCleanDb.Designer.cs">
       <DependentUpon>201710251353403_StartWithCleanDb.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710231105369_RegNoToString.cs" />
+    <Compile Include="Migrations\201710231105369_RegNoToString.Designer.cs">
+      <DependentUpon>201710231105369_RegNoToString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710240858030_abc.cs" />
+    <Compile Include="Migrations\201710240858030_abc.Designer.cs">
+      <DependentUpon>201710240858030_abc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710260653021_aa.cs" />
+    <Compile Include="Migrations\201710260653021_aa.Designer.cs">
+      <DependentUpon>201710260653021_aa.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ParkedVehicle.cs" />
     <Compile Include="Models\ViewModels\ListAllParkingViewModel.cs" />
+    <Compile Include="Models\ViewModels\VehicleStats.cs" />
     <Compile Include="Models\ViewModels\Receipt.cs" />
     <Compile Include="Models\Parking.cs" />
     <Compile Include="Models\ViewModels\StatisticsViewModel.cs" />
@@ -190,6 +203,7 @@
     <Content Include="Views\ParkedVehicles\CheckOut.cshtml" />
     <Content Include="Views\ParkedVehicles\Statistics.cshtml" />
     <Content Include="Views\ParkedVehicles\ListAllParking.cshtml" />
+    <Content Include="Views\ParkedVehicles\VehStats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -206,6 +220,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201710251353403_StartWithCleanDb.resx">
       <DependentUpon>201710251353403_StartWithCleanDb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710260653021_aa.resx">
+      <DependentUpon>201710260653021_aa.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

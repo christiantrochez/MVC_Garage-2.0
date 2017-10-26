@@ -18,6 +18,6 @@ namespace MVC_Garage_2._0.DataAccessLayer
 
         public System.Data.Entity.DbSet<MVC_Garage_2._0.Models.ViewModels.Receipt> Receipts { get; set; }
 
-        //public System.Data.Entity.DbSet<MVC_Garage_2._0.Models.ViewModels.VehicleListItem> VehicleListItems { get; set; }
+        public System.Data.Entity.DbSet<MVC_Garage_2._0.Models.ViewModels.VehicleStats> VehicleStats { get; set; }
     }
 }

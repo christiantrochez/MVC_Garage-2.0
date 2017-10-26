@@ -16,27 +16,11 @@ namespace MVC_Garage_2._0.Controllers
     {
         private RegisterContext db = new RegisterContext();
         private int MinuteCost = 10;
-
-        // GET: Statistics
-        //public ActionResult Statistics()
-        //{
-        //   // var allParkingSpots = db.Parkings;
-        //    var allParkedVehicles = db.ParkedVehicles;
-
-        //    var Statistics = from allParked in allParkedVehicles
-        //                     group allParked by allParked.VehicleTYpe into vehicleGroup
-        //                     select new StatisticsViewModel()
-        //                     {
-        //                         VehicelType = vehicleGroup.Key,
-        //                         NumberOfVechileType = vehicleGroup.Count()
-        //                     };
-
-        //    return View(Statistics.ToList());
-
-        //}
-
-
+        public static int TotalGarageCost;
+        public string[] vehInfo = new string[200];
+        public string[] text = new string[200];
         // GET: ListAllVehicles
+        //Started today
         public ActionResult ListAllVehicles(string sortOrder, string searchString, string currentFilter)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -86,10 +70,10 @@ namespace MVC_Garage_2._0.Controllers
                         break;
                     }
                 default:
-                   {
+                    {
                         VehicleItems = VehicleItems.OrderBy(v => v.RegistrationNumber);
-                            break;
-                   }                                        
+                        break;
+                    }
             }
 
 
@@ -101,6 +85,51 @@ namespace MVC_Garage_2._0.Controllers
         {
             return View(db.ParkedVehicles.ToList());
         }
+        public ActionResult VehStats(VehicleType? vehicleType)
+        {
+            var parkedVehicles = from m in db.ParkedVehicles
+                                 select m;
+            var GarageInfoLst = new List<string>();
+
+
+            var airCount = parkedVehicles.Where(v => v.VehicleTYpe == VehicleType.Airplane).Count();
+            var boatCount = parkedVehicles.Where(v => v.VehicleTYpe == VehicleType.Boat).Count();
+            var busCount = parkedVehicles.Where(v => v.VehicleTYpe == VehicleType.Bus).Count();
+            var carCount = parkedVehicles.Where(v => v.VehicleTYpe == VehicleType.Car).Count();
+            var motCount = parkedVehicles.Where(v => v.VehicleTYpe == VehicleType.Motorcycle).Count();
+
+            
+           
+            GarageInfoLst.Add($"Airplane count: {airCount}");
+            GarageInfoLst.Add($"Boat count: {boatCount}");
+            GarageInfoLst.Add($"Bus count: {busCount}");
+            GarageInfoLst.Add($"Car count: {carCount}");
+            GarageInfoLst.Add($"Motorcycle count: {motCount}");
+            
+           
+            var WheelCount = (from d in db.ParkedVehicles
+                              select d.NumberOfWheels).Sum();
+            GarageInfoLst.Add($"Total Wheels count: {WheelCount}");
+            ViewBag.Text = GarageInfoLst;
+            var VehicleInfoLst = new List<VehicleStats>();
+
+            foreach (var veh in parkedVehicles)
+            {
+                
+                VehicleStats vehs = new VehicleStats();
+                vehs.Id = veh.Id;
+                vehs.RegNo = veh.RegistrationNumber;
+                vehs.ParkedTime = (int)DateTime.Now.Subtract(veh.InDate).TotalMinutes;
+                vehs.TotalParkedCost = vehs.ParkedTime * MinuteCost;
+                
+                VehicleInfoLst.Add(vehs);
+            }
+
+
+            return View(VehicleInfoLst);
+        }
+
+
 
         // GET: ParkedVehicles/Details/5
         public ActionResult Details(int? id)
@@ -255,7 +284,7 @@ namespace MVC_Garage_2._0.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int ? id)
+        public ActionResult EditPost(int? id)
         {
             if (id == null)
             {
@@ -263,7 +292,7 @@ namespace MVC_Garage_2._0.Controllers
             }
 
             var parkedVehicleToUpdate = db.ParkedVehicles.Find(id);
-            if (TryUpdateModel(parkedVehicleToUpdate, "", new string[] {"RegistrationNumber", "NumberOfWheels", "VehicleBrand", "VehicleModel", "VehicleTYpe", "Color" }))
+            if (TryUpdateModel(parkedVehicleToUpdate, "", new string[] { "RegistrationNumber", "NumberOfWheels", "VehicleBrand", "VehicleModel", "VehicleTYpe", "Color" }))
             {
                 try
                 {
@@ -347,7 +376,7 @@ namespace MVC_Garage_2._0.Controllers
             recVehicle.TotalCost = recVehicle.TotalParkedTime * MinuteCost;
 
             return View(recVehicle);
-          
+
         }
         // POST: ParkedVehicles/Delete/5
         [HttpPost, ActionName("CheckOut")]
