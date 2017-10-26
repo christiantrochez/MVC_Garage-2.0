@@ -52,7 +52,7 @@ namespace MVC_Garage_2._0.Models
 
         public Color Color { get; set; }
 
-        
+        [Display(Name ="Parking Spot No")]
         public int ParkingSpot { get; set; }
     }
 }

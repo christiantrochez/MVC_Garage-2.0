@@ -49,7 +49,7 @@ namespace MVC_Garage_2._0.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                VehicleItems = VehicleItems.Where(v => v.RegistrationNumber.StartsWith(searchString));
+                VehicleItems = VehicleItems.Where(v => v.RegistrationNumber.Contains(searchString));
             }
 
             switch (sortOrder)
@@ -348,7 +348,7 @@ namespace MVC_Garage_2._0.Controllers
             ParkedVehicle parkedVehicle = db.ParkedVehicles.Find(id);
             db.ParkedVehicles.Remove(parkedVehicle);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("ListAllVehicles");
 
         }
         //// GET: ParkedVehicles/Delete/5
@@ -416,7 +416,7 @@ namespace MVC_Garage_2._0.Controllers
 
             db.ParkedVehicles.Remove(parkedVehicle);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("ListAllVehicles");
 
         }
 
@@ -430,7 +430,8 @@ namespace MVC_Garage_2._0.Controllers
 
             var parking = new List<ListAllParkingViewModel>();
 
-            for (int i = 0; i < currentParking.Count(); i++)
+          //  for (int i = 0; i < currentParking.Count(); i++)
+                for (int i = 0; i < 30; i++)
             {
                 tempSpotNo = currentParkings[i].Id;
                 if (currentParkings[i].WhatIsParked == 0)
