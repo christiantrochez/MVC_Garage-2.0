@@ -390,6 +390,42 @@ namespace MVC_Garage_2._0.Controllers
             return RedirectToAction("Index");
 
         }
+
+        public ActionResult ListAllParking()
+        {
+            var currentParking = db.Parkings;
+            int tempSpotNo;
+            string tempSpotStatus = "";
+
+            var currentParkings = currentParking.ToList();
+
+            var parking = new List<ListAllParkingViewModel>();
+
+            for (int i = 0; i < currentParking.Count(); i++)
+            {
+                tempSpotNo = currentParkings[i].Id;
+                if (currentParkings[i].WhatIsParked == 0)
+                {
+                    tempSpotStatus = "Free";
+                }
+                else if (currentParkings[i].WhatIsParked == 1)
+                {
+                    tempSpotStatus = "1 Motorcycle";
+                }
+                else if (currentParkings[i].WhatIsParked == 2)
+                {
+                    tempSpotStatus = "2 Motorcycles";
+                }
+                else if (currentParkings[i].WhatIsParked == 3)
+                {
+                    tempSpotStatus = "Occupied";
+                }
+                var p = new ListAllParkingViewModel() { ParkingSpotNumber = tempSpotNo, ParkingSpotStatus = tempSpotStatus };
+                parking.Add(p);
+            }
+         
+            return View(parking);
+        }
        
         protected override void Dispose(bool disposing)
         {
