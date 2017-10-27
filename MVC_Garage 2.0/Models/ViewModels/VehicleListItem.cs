@@ -22,5 +22,8 @@ namespace MVC_Garage_2._0.Models.ViewModels
         [Display(Name = "Parking Date")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         public DateTime InDate { get; set; }
+
+        [Display(Name ="Parking Spot No:")]
+        public int ParkingSpotNumber { get; set; }
     }
 }

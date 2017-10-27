@@ -37,7 +37,8 @@ namespace MVC_Garage_2._0.Controllers
                 RegistrationNumber = v.RegistrationNumber,
                 VehicleType = v.VehicleTYpe,
                 Color = v.Color,
-                InDate = v.InDate
+                InDate = v.InDate,
+                ParkingSpotNumber = v.ParkingSpot
             });
 
             if (searchString == null)
