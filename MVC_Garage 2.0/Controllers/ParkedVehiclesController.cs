@@ -28,6 +28,7 @@ namespace MVC_Garage_2._0.Controllers
 
 
             var allParkedVehicles = db.ParkedVehicles;
+           
 
             var VehicleItems = allParkedVehicles.Select(v => new VehicleListItem
             {
@@ -47,7 +48,7 @@ namespace MVC_Garage_2._0.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                VehicleItems = VehicleItems.Where(v => v.RegistrationNumber.StartsWith(searchString));
+                VehicleItems = VehicleItems.Where(v => v.RegistrationNumber.Contains(searchString));
             }
 
             switch (sortOrder)
@@ -163,15 +164,108 @@ namespace MVC_Garage_2._0.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,RegistrationNumber,NumberOfWheels,VehicleBrand,VehicleModel,VehicleTYpe,Color")] ParkedVehicle parkedVehicle)
         {
-            if (ModelState.IsValid)
+            var currentParking = db.Parkings;
+
+            int parkingSpotNumber = findFirstAvailableSpot(currentParking, parkedVehicle.VehicleTYpe);
+
+            if (parkingSpotNumber == 0)
             {
-                parkedVehicle.InDate = DateTime.Now;
-                db.ParkedVehicles.Add(parkedVehicle);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("ListAllVehicles");
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    var spotToUpdate = currentParking.Find(parkingSpotNumber);
+
+                    switch (parkedVehicle.VehicleTYpe)
+                    {
+                        case VehicleType.Car:
+                            spotToUpdate.WhatIsParked = 3;
+                            break;
+                        case VehicleType.Motorcycle:
+                            spotToUpdate.WhatIsParked++;
+                            break;
+                        case VehicleType.Airplane:
+                            for (int i = 0; i <= 2; i++)
+                            {
+                                spotToUpdate = currentParking.Find(parkingSpotNumber + i);
+                                spotToUpdate.WhatIsParked = 3;
+                            }
+                            break;
+                        default:
+                            for (int i = 0; i <= 1 ; i++)
+                            {
+                                spotToUpdate = currentParking.Find(parkingSpotNumber + i);
+                                spotToUpdate.WhatIsParked = 3;
+                            }
+                            break;
+                    }
+
+                    
+                    
+
+                    parkedVehicle.InDate = DateTime.Now;
+                    parkedVehicle.ParkingSpot = parkingSpotNumber;
+                    db.ParkedVehicles.Add(parkedVehicle);
+                    db.SaveChanges();
+                    return RedirectToAction("ListAllVehicles");
+                }
+
+                return View(parkedVehicle);
+            }
+        }
+
+        private int findFirstAvailableSpot(DbSet<Parking> currentParking, VehicleType vehicleType)
+        {
+            List<Parking> freeSpots;
+
+            if (vehicleType != VehicleType.Motorcycle)
+            {
+                freeSpots = currentParking.Where(s => s.WhatIsParked == 0).ToList();
+            }
+            else
+            {
+                freeSpots = currentParking.Where(s => s.WhatIsParked < 3).ToList();
             }
 
-            return View(parkedVehicle);
+            if (freeSpots.Count() == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                switch (vehicleType)
+                {
+                    case VehicleType.Car:
+                        return freeSpots.FirstOrDefault().Id;
+                        break;
+                    case VehicleType.Motorcycle:
+                        return freeSpots.FirstOrDefault().Id;
+                        break;
+                    case VehicleType.Airplane:
+                        for (int i = 0; i < freeSpots.Count()-2; i++)
+                        {
+                            if ((freeSpots[i].Id == (freeSpots[i + 1].Id - 1)) &&
+                               (freeSpots[i].Id == (freeSpots[i + 2].Id - 2)))
+                            {
+                                return freeSpots[i].Id;
+                            }
+                        }
+                        return 0;
+                        break;
+                    default:
+                        for (int i = 0; i < freeSpots.Count()-1; i++)
+                        {
+                            if (freeSpots[i].Id == (freeSpots[i+1].Id - 1))
+                            {
+                                return freeSpots[i].Id;
+                            }
+                        }
+                        return 0;
+                }
+                return 0;
+            }
         }
 
         // GET: ParkedVehicles/Edit/5
@@ -258,7 +352,7 @@ namespace MVC_Garage_2._0.Controllers
             ParkedVehicle parkedVehicle = db.ParkedVehicles.Find(id);
             db.ParkedVehicles.Remove(parkedVehicle);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("ListAllVehicles");
 
         }
         //// GET: ParkedVehicles/Delete/5
@@ -294,12 +388,93 @@ namespace MVC_Garage_2._0.Controllers
         public ActionResult CheckOutConfirmed(int id)
         {
             ParkedVehicle parkedVehicle = db.ParkedVehicles.Find(id);
+
+            var parkingSpot = parkedVehicle.ParkingSpot;
+
+            var currentParking = db.Parkings;
+            var spotToUpdate = currentParking.Find(parkingSpot);
+
+            switch (parkedVehicle.VehicleTYpe)
+            {
+                case VehicleType.Car:
+                    spotToUpdate.WhatIsParked = 0;
+                    break;
+                case VehicleType.Motorcycle:
+                    spotToUpdate.WhatIsParked--;
+                    break;
+                case VehicleType.Airplane:
+                    for (int i = 0; i <= 2; i++)
+                    {
+                        spotToUpdate = currentParking.Find(parkingSpot + i);
+                        spotToUpdate.WhatIsParked = 0;
+                    }
+                    break;
+                default:
+                    for (int i = 0; i <= 1; i++)
+                    {
+                        spotToUpdate = currentParking.Find(parkingSpot + i);
+                        spotToUpdate.WhatIsParked = 0;
+                    }
+                    break;
+            }
+
             db.ParkedVehicles.Remove(parkedVehicle);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("ListAllVehicles");
 
         }
 
+        public ActionResult ListAllParking()
+        {
+            var currentParking = db.Parkings;
+            int tempSpotNo;
+            string tempSpotStatus = "";
+
+            var currentParkings = currentParking.ToList();
+
+            var parking = new List<ListAllParkingViewModel>();
+
+          //  for (int i = 0; i < currentParking.Count(); i++)
+                for (int i = 0; i < 30; i++)
+            {
+                tempSpotNo = currentParkings[i].Id;
+                if (currentParkings[i].WhatIsParked == 0)
+                {
+                    tempSpotStatus = "Free";
+                }
+                else if (currentParkings[i].WhatIsParked == 1)
+                {
+                    tempSpotStatus = "1 Motorcycle";
+                }
+                else if (currentParkings[i].WhatIsParked == 2)
+                {
+                    tempSpotStatus = "2 Motorcycles";
+                }
+                else if (currentParkings[i].WhatIsParked == 3)
+                {
+                    tempSpotStatus = "Occupied";
+                }
+                var p = new ListAllParkingViewModel() { ParkingSpotNumber = tempSpotNo, ParkingSpotStatus = tempSpotStatus };
+                parking.Add(p);
+            }
+         
+            return View(parking);
+        }
+        
+        //public PartialViewResult ParkingOverallStatus()
+        //{
+        //    var currentParking = db.Parkings.ToList();
+
+        //    var emptySpots = currentParking.Where(s => s.WhatIsParked == 0);
+
+        //    var returnString = $"@<progress value={emptySpots.Count()} max={currentParking.Count()}></progress>";
+
+        //    return PartialView(returnString);   
+
+
+        //}
+
+       
         protected override void Dispose(bool disposing)
         {
             if (disposing)
