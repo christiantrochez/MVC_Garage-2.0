@@ -17,8 +17,7 @@ namespace MVC_Garage_2._0.Controllers
         private RegisterContext db = new RegisterContext();
         private int MinuteCost = 10;
         public static int TotalGarageCost;
-        public string[] vehInfo = new string[200];
-        public string[] text = new string[200];
+        
         // GET: ListAllVehicles
         //Started today
         public ActionResult ListAllVehicles(string sortOrder, string searchString, string currentFilter)
@@ -111,22 +110,27 @@ namespace MVC_Garage_2._0.Controllers
             var WheelCount = (from d in db.ParkedVehicles
                               select d.NumberOfWheels).Sum();
             GarageInfoLst.Add($"Total Wheels count: {WheelCount}");
-            ViewBag.Text = GarageInfoLst;
+            //ViewBag.Text = GarageInfoLst;
+                       
             var VehicleInfoLst = new List<VehicleStats>();
 
             foreach (var veh in parkedVehicles)
             {
                 
-                VehicleStats vehs = new VehicleStats();
+               VehicleStats vehs = new VehicleStats();
                 vehs.Id = veh.Id;
                 vehs.RegNo = veh.RegistrationNumber;
                 vehs.ParkedTime = (int)DateTime.Now.Subtract(veh.InDate).TotalMinutes;
-                vehs.TotalParkedCost = vehs.ParkedTime * MinuteCost;
-                
+                vehs.TotalParkedCost = vehs.ParkedTime * MinuteCost;                
                 VehicleInfoLst.Add(vehs);
             }
-
-
+            TotalGarageCost = 0;
+            foreach (var vehCost in VehicleInfoLst)
+            {
+                TotalGarageCost += vehCost.TotalParkedCost;
+            }
+            GarageInfoLst.Add($"Total Garage Cost: {TotalGarageCost}");
+            ViewBag.Text = GarageInfoLst;
             return View(VehicleInfoLst);
         }
 
