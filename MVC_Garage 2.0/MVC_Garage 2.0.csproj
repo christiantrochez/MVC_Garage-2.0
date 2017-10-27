@@ -133,17 +133,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201710261100365_To2_1.cs" />
-    <Compile Include="Migrations\201710261100365_To2_1.Designer.cs">
-      <DependentUpon>201710261100365_To2_1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201710261131304_abcd.cs" />
-    <Compile Include="Migrations\201710261131304_abcd.Designer.cs">
-      <DependentUpon>201710261131304_abcd.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201710270811416_abcda.cs" />
-    <Compile Include="Migrations\201710270811416_abcda.Designer.cs">
-      <DependentUpon>201710270811416_abcda.cs</DependentUpon>
+    <Compile Include="Migrations\201710270826516_Add Parking, add ParkedVehicles.Spots.cs" />
+    <Compile Include="Migrations\201710270826516_Add Parking, add ParkedVehicles.Spots.Designer.cs">
+      <DependentUpon>201710270826516_Add Parking, add ParkedVehicles.Spots.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ParkedVehicle.cs" />
@@ -214,14 +206,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201710261100365_To2_1.resx">
-      <DependentUpon>201710261100365_To2_1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710261131304_abcd.resx">
-      <DependentUpon>201710261131304_abcd.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710270811416_abcda.resx">
-      <DependentUpon>201710270811416_abcda.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201710270826516_Add Parking, add ParkedVehicles.Spots.resx">
+      <DependentUpon>201710270826516_Add Parking, add ParkedVehicles.Spots.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

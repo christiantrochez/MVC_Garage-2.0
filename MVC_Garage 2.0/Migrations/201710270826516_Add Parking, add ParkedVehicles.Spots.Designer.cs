@@ -7,13 +7,13 @@ namespace MVC_Garage_2._0.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class abcda : IMigrationMetadata
+    public sealed partial class AddParkingaddParkedVehiclesSpots : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(abcda));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddParkingaddParkedVehiclesSpots));
         
         string IMigrationMetadata.Id
         {
-            get { return "201710270811416_abcda"; }
+            get { return "201710270826516_Add Parking, add ParkedVehicles.Spots"; }
         }
         
         string IMigrationMetadata.Source
